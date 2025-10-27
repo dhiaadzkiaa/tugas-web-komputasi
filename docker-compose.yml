@@ -1,0 +1,6 @@
+services:
+  hello-world-dashboard:
+    build: .
+    container_name: hello-world-dashboard
+    ports:
+      - "8081:80"
