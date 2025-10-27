@@ -36,17 +36,6 @@ pipeline {
             }
         }
 
-        stage('Debug PATH & Workspace') {
-            steps {
-                echo "🔹 Debug info"
-                sh 'echo $PATH'
-                sh 'which go'
-                sh 'which docker'
-                sh 'which docker-compose'
-                sh 'ls -la'
-            }
-        }
-    }
 
     post {
         success {
@@ -57,3 +46,4 @@ pipeline {
         }
     }
 }
+
