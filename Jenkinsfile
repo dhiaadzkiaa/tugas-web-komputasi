@@ -35,7 +35,7 @@ pipeline {
                 sh 'docker-compose up -d --build'
             }
         }
-
+    }  // ✅ Tutup stages di sini
 
     post {
         success {
@@ -46,4 +46,3 @@ pipeline {
         }
     }
 }
-
