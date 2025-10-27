@@ -1,29 +1,47 @@
 pipeline {
-    agent any
+    agent {
+        docker { image 'golang:1.25' }
+    }
 
     environment {
         APP_PORT = '8081'
-        PATH = "C:\\Program Files\\Go\\bin;${env.PATH}"
     }
 
     stages {
-        stage('Build Go App') {
+        stage('Checkout SCM') {
             steps {
-                bat 'go version'
-                bat 'go mod tidy'
-                bat 'go build -o app main.go'
+                checkout scm
+            }
+        }
+
+        stage('Build & Test (Go)') {
+            steps {
+                sh 'go version'
+                sh 'go mod tidy'
+                sh 'go test ./...'
+                sh 'go build -o app main.go'
             }
         }
 
         stage('Docker Build') {
             steps {
-                bat 'docker build -t hello-world-dashboard .'
+                sh 'docker build -t hello-world-dashboard .'
             }
         }
 
         stage('Run Docker Compose') {
             steps {
-                bat 'docker-compose up -d --build'
+                sh 'docker-compose up -d --build'
+            }
+        }
+
+        stage('Debug PATH & Workspace') {
+            steps {
+                sh 'echo $PATH'
+                sh 'which go'
+                sh 'which docker'
+                sh 'which docker-compose'
+                sh 'ls -la'
             }
         }
     }
